@@ -12,7 +12,9 @@
 using namespace std;
 
 int main (int argc, char *argv[]) { 
-    TString MyInput("/home/petr/GitLab/unfolding/production/DelphesRootFiles/pp2ttbarj_ljets_both_LO.root"), MyTree("Delphes"), MyOutput("out_data_nominal.root"), MyPathToTree("");
+    //TString MyInput("/home/petr/GitLab/unfolding/production/DelphesRootFiles/pp2ttbarj_ljets_both_LO.root"), MyTree("Delphes"), MyOutput("out_data_nominal.root"), MyPathToTree("");
+    TString MyInput("/home/petr/production-ttbar/DelphesRootFiles/pp2ttbarj_ljets_both_LO_matrix.root"), MyTree("Delphes"), MyOutput("out_data_nominal_matrix.root"), MyPathToTree("");
+    
     TApplication theApp("App",&argc, argv);
     if (argc > 1){
         MyInput = argv[1];

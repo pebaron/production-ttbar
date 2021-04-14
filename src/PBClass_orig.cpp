@@ -376,8 +376,7 @@ bool CheckPreSelectedLepton(Event TestEvent){
 
 
 float DeltaR(MyLorentzVector a, MyLorentzVector b){
-   return a.DeltaR(b);
-   //return sqrt((a.Phi() - b.Phi())*(a.Phi() - b.Phi()) + (a.Eta() - b.Eta())*(a.Eta() - b.Eta()));
+   return sqrt((a.Phi() - b.Phi())*(a.Phi() - b.Phi()) + (a.Eta() - b.Eta())*(a.Eta() - b.Eta()));
 }
 
 void PBClass::Loop(TString Output, TString Tag)
@@ -564,438 +563,10 @@ void PBClass::Loop(TString Output, TString Tag)
    TH2D *MigraTopPairPt = new TH2D("MigraTopPairPt", "MigraTopPairPt; Detector level p_{T}^{t,#bar{t}} [GeV]; Particle level p_{T}^{t,#bar{t}} [GeV]", 1000, 0, 300, 1000, 0, 300);
    TH2D *MigraTopPairMass = new TH2D("MigraTopPairMass", "MigraTopPairMass; Detector level Mass [GeV]; Particle level Mass [GeV]", 1000, 100, 2500, 1000, 100, 2500);
    TH2D *MigraTopPairEta = new TH2D("MigraTopPairEta", "MigraTopPairEta; Detector level #eta; Particle level #eta", 1000, -6.28, 6.28, 1000, -6.28, 6.28);
-   
-   float Top1_Data_Pt;
-   float Top1_Data_Eta;
-   float Top1_Data_Phi;
-   float Top1_Data_E;
-   float Top1_Data_M;
-
-   float Top1_Bjet_Data_Pt;
-   float Top1_Bjet_Data_Eta;
-   float Top1_Bjet_Data_Phi;
-   float Top1_Bjet_Data_E;
-   float Top1_Bjet_Data_M;
-
-   float Top1_Wboson_Data_Pt;
-   float Top1_Wboson_Data_Eta;
-   float Top1_Wboson_Data_Phi;
-   float Top1_Wboson_Data_E;
-   float Top1_Wboson_Data_M;
-
-   float Top2_Data_Pt;
-   float Top2_Data_Eta;
-   float Top2_Data_Phi;
-   float Top2_Data_E;
-   float Top2_Data_M;
-
-   float Top2_Bjet_Data_Pt;
-   float Top2_Bjet_Data_Eta;
-   float Top2_Bjet_Data_Phi;
-   float Top2_Bjet_Data_E;
-   float Top2_Bjet_Data_M;
-
-   float Top2_Lepton_Data_Pt;
-   float Top2_Lepton_Data_Eta;
-   float Top2_Lepton_Data_Phi;
-   float Top2_Lepton_Data_E;
-   float Top2_Lepton_Data_M;
-
-   float Top2_Neutrino_Data_Pt;
-   float Top2_Neutrino_Data_Eta;
-   float Top2_Neutrino_Data_Phi;
-   float Top2_Neutrino_Data_E;
-   float Top2_Neutrino_Data_M;
-
-   float Top1_MC_Pt;
-   float Top1_MC_Eta;
-   float Top1_MC_Phi;
-   float Top1_MC_E;
-   float Top1_MC_M;
-
-   float Top1_Bjet_MC_Pt;
-   float Top1_Bjet_MC_Eta;
-   float Top1_Bjet_MC_Phi;
-   float Top1_Bjet_MC_E;
-   float Top1_Bjet_MC_M;
-
-   float Top1_Wboson_MC_Pt;
-   float Top1_Wboson_MC_Eta;
-   float Top1_Wboson_MC_Phi;
-   float Top1_Wboson_MC_E;
-   float Top1_Wboson_MC_M;
-   
-   float Top2_MC_Pt;
-   float Top2_MC_Eta;
-   float Top2_MC_Phi;
-   float Top2_MC_E;
-   float Top2_MC_M;
-
-   float Top2_Bjet_MC_Pt;
-   float Top2_Bjet_MC_Eta;
-   float Top2_Bjet_MC_Phi;
-   float Top2_Bjet_MC_E;
-   float Top2_Bjet_MC_M;
-
-   float Top2_Lepton_MC_Pt;
-   float Top2_Lepton_MC_Eta;
-   float Top2_Lepton_MC_Phi;
-   float Top2_Lepton_MC_E;
-   float Top2_Lepton_MC_M;
-
-   float Top2_Neutrino_MC_Pt;
-   float Top2_Neutrino_MC_Eta;
-   float Top2_Neutrino_MC_Phi;
-   float Top2_Neutrino_MC_E;
-   float Top2_Neutrino_MC_M;
-
-   float ttbar_Data_Pt;
-   float ttbar_Data_Eta;
-   float ttbar_Data_Phi;
-   float ttbar_Data_E;
-   float ttbar_Data_M;
-
-   float ttbar_MC_Pt;
-   float ttbar_MC_Eta;
-   float ttbar_MC_Phi;
-   float ttbar_MC_E;
-   float ttbar_MC_M;
-
-   float check_variable1;
-   float check_variable2;
-   float check_variable3;
-   float check_variable4;
-   
-   int int_Event_size;
-   int int_GenLJet_size;
-   int int_GenJet_size;
-   int int_GenElectron_size;
-   int int_GenMuon_size;
-   int int_GenTop_size;
-   int int_GenPhoton_size;
-   int int_GenMissingET_size;
-   int int_GenZPrime_size;
-   int int_GenW_size;
-   int int_GenBhadrons_size;
-   int int_Jet_size;
-   int int_LJet_size;
-   int int_JetJES_size;
-   int int_LJetJES_size;
-   int int_Electron_size;
-   int int_Photon_size;
-   int int_Muon_size;
-   int int_MissingET_size;
-   int int_ScalarHT_size;
-
-   TTree *tree_particle = new TTree("Tops_Particle","TLorenzVecors_of_tops_ljets_particle");
-   tree_particle->Branch("Hadronic_Top_Data_Pt", &Top1_Data_Pt, "Top1_Data_Pt/F");
-   tree_particle->Branch("Hadronic_Top_Data_Eta", &Top1_Data_Eta, "Top1_Data_Eta/F");
-   tree_particle->Branch("Hadronic_Top_Data_Phi", &Top1_Data_Phi, "Top1_Data_Phi/F");
-   tree_particle->Branch("Hadronic_Top_Data_E", &Top1_Data_E, "Top1_Data_E/F");
-   tree_particle->Branch("Hadronic_Top_Data_M", &Top1_Data_M, "Top1_Data_M/F");
-
-   tree_particle->Branch("Hadronic_Top_Bjet_Data_Pt", &Top1_Bjet_Data_Pt, "Top1_Bjet_Data_Pt/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_Data_Eta", &Top1_Bjet_Data_Eta, "Top1_Bjet_Data_Eta/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_Data_Phi", &Top1_Bjet_Data_Phi, "Top1_Bjet_Data_Phi/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_Data_E", &Top1_Bjet_Data_E, "Top1_Bjet_Data_E/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_Data_M", &Top1_Bjet_Data_M, "Top1_Bjet_Data_M/F");
-
-   tree_particle->Branch("Hadronic_Top_Wboson_Data_Pt", &Top1_Wboson_Data_Pt, "Top1_Wboson_Data_Pt/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_Data_Eta", &Top1_Wboson_Data_Eta, "Top1_Wboson_Data_Eta/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_Data_Phi", &Top1_Wboson_Data_Phi, "Top1_Wboson_Data_Phi/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_Data_E", &Top1_Wboson_Data_E, "Top1_Wboson_Data_E/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_Data_M", &Top1_Wboson_Data_M, "Top1_Wboson_Data_M/F");
-
-   tree_particle->Branch("Leptonic_Top_Data_Pt", &Top2_Data_Pt, "Top2_Data_Pt/F");
-   tree_particle->Branch("Leptonic_Top_Data_Eta", &Top2_Data_Eta, "Top2_Data_Eta/F");
-   tree_particle->Branch("Leptonic_Top_Data_Phi", &Top2_Data_Phi, "Top2_Data_Phi/F");
-   tree_particle->Branch("Leptonic_Top_Data_E", &Top2_Data_E, "Top2_Data_E/F");
-   tree_particle->Branch("Leptonic_Top_Data_M", &Top2_Data_M, "Top2_Data_M/F");
-
-   tree_particle->Branch("Leptonic_Top_Bjet_Data_Pt", &Top2_Bjet_Data_Pt, "Top2_Bjet_Data_Pt/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_Data_Eta", &Top2_Bjet_Data_Eta, "Top2_Bjet_Data_Eta/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_Data_Phi", &Top2_Bjet_Data_Phi, "Top2_Bjet_Data_Phi/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_Data_E", &Top2_Bjet_Data_E, "Top2_Bjet_Data_E/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_Data_M", &Top2_Bjet_Data_M, "Top2_Bjet_Data_M/F");
-
-   tree_particle->Branch("Leptonic_Top_Lepton_Data_Pt", &Top2_Lepton_Data_Pt, "Top2_Lepton_Data_Pt/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_Data_Eta", &Top2_Lepton_Data_Eta, "Top2_Lepton_Data_Eta/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_Data_Phi", &Top2_Lepton_Data_Phi, "Top2_Lepton_Data_Phi/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_Data_E", &Top2_Lepton_Data_E, "Top2_Lepton_Data_E/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_Data_M", &Top2_Lepton_Data_M, "Top2_Lepton_Data_M/F");
-
-   tree_particle->Branch("Leptonic_Top_Neutrino_Data_Pt", &Top2_Neutrino_Data_Pt, "Top2_Neutrino_Data_Pt/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_Data_Eta", &Top2_Neutrino_Data_Eta, "Top2_Neutrino_Data_Eta/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_Data_Phi", &Top2_Neutrino_Data_Phi, "Top2_Neutrino_Data_Phi/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_Data_E", &Top2_Neutrino_Data_E, "Top2_Neutrino_Data_E/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_Data_M", &Top2_Neutrino_Data_M, "Top2_Neutrino_Data_M/F");
-
-   tree_particle->Branch("ljets_ttbar_Data_Pt", &ttbar_Data_Pt, "ttbar_Data_Pt/F");
-   tree_particle->Branch("ljets_ttbar_Data_Eta", &ttbar_Data_Eta, "ttbar_Data_Eta/F");
-   tree_particle->Branch("ljets_ttbar_Data_Phi", &ttbar_Data_Phi, "ttbar_Data_Phi/F");
-   tree_particle->Branch("ljets_ttbar_Data_E", &ttbar_Data_E, "ttbar_Data_E/F");
-   tree_particle->Branch("ljets_ttbar_Data_M", &ttbar_Data_M, "ttbar_Data_M/F");
-
-   tree_particle->Branch("Hadronic_Top_MC_Pt", &Top1_MC_Pt, "Top1_MC_Pt/F");
-   tree_particle->Branch("Hadronic_Top_MC_Eta", &Top1_MC_Eta, "Top1_MC_Eta/F");
-   tree_particle->Branch("Hadronic_Top_MC_Phi", &Top1_MC_Phi, "Top1_MC_Phi/F");
-   tree_particle->Branch("Hadronic_Top_MC_E", &Top1_MC_E, "Top1_MC_E/F");
-   tree_particle->Branch("Hadronic_Top_MC_M", &Top1_MC_M, "Top1_MC_M/F");
-
-   tree_particle->Branch("Hadronic_Top_Bjet_MC_Pt", &Top1_Bjet_MC_Pt, "Top1_Bjet_MC_Pt/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_MC_Eta", &Top1_Bjet_MC_Eta, "Top1_Bjet_MC_Eta/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_MC_Phi", &Top1_Bjet_MC_Phi, "Top1_Bjet_MC_Phi/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_MC_E", &Top1_Bjet_MC_E, "Top1_Bjet_MC_E/F");
-   tree_particle->Branch("Hadronic_Top_Bjet_MC_M", &Top1_Bjet_MC_M, "Top1_Bjet_MC_M/F");
-
-   tree_particle->Branch("Hadronic_Top_Wboson_MC_Pt", &Top1_Wboson_MC_Pt, "Top1_Wboson_MC_Pt/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_MC_Eta", &Top1_Wboson_MC_Eta, "Top1_Wboson_MC_Eta/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_MC_Phi", &Top1_Wboson_MC_Phi, "Top1_Wboson_MC_Phi/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_MC_E", &Top1_Wboson_MC_E, "Top1_Wboson_MC_E/F");
-   tree_particle->Branch("Hadronic_Top_Wboson_MC_M", &Top1_Wboson_MC_M, "Top1_Wboson_MC_M/F");
-
-   tree_particle->Branch("Leptonic_Top_MC_Pt", &Top2_MC_Pt, "Top2_MC_Pt/F");
-   tree_particle->Branch("Leptonic_Top_MC_Eta", &Top2_MC_Eta, "Top2_MC_Eta/F");
-   tree_particle->Branch("Leptonic_Top_MC_Phi", &Top2_MC_Phi, "Top2_MC_Phi/F");
-   tree_particle->Branch("Leptonic_Top_MC_E", &Top2_MC_E, "Top2_MC_E/F");
-   tree_particle->Branch("Leptonic_Top_MC_M", &Top2_MC_M, "Top2_MC_M/F");
-
-   tree_particle->Branch("Leptonic_Top_Bjet_MC_Pt", &Top2_Bjet_MC_Pt, "Top2_Bjet_MC_Pt/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_MC_Eta", &Top2_Bjet_MC_Eta, "Top2_Bjet_MC_Eta/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_MC_Phi", &Top2_Bjet_MC_Phi, "Top2_Bjet_MC_Phi/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_MC_E", &Top2_Bjet_MC_E, "Top2_Bjet_MC_E/F");
-   tree_particle->Branch("Leptonic_Top_Bjet_MC_M", &Top2_Bjet_MC_M, "Top2_Bjet_MC_M/F");
-
-   tree_particle->Branch("Leptonic_Top_Lepton_MC_Pt", &Top2_Lepton_MC_Pt, "Top2_Lepton_MC_Pt/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_MC_Eta", &Top2_Lepton_MC_Eta, "Top2_Lepton_MC_Eta/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_MC_Phi", &Top2_Lepton_MC_Phi, "Top2_Lepton_MC_Phi/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_MC_E", &Top2_Lepton_MC_E, "Top2_Lepton_MC_E/F");
-   tree_particle->Branch("Leptonic_Top_Lepton_MC_M", &Top2_Lepton_MC_M, "Top2_Lepton_MC_M/F");
-
-   tree_particle->Branch("Leptonic_Top_Neutrino_MC_Pt", &Top2_Neutrino_MC_Pt, "Top2_Neutrino_MC_Pt/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_MC_Eta", &Top2_Neutrino_MC_Eta, "Top2_Neutrino_MC_Eta/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_MC_Phi", &Top2_Neutrino_MC_Phi, "Top2_Neutrino_MC_Phi/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_MC_E", &Top2_Neutrino_MC_E, "Top2_Neutrino_MC_E/F");
-   tree_particle->Branch("Leptonic_Top_Neutrino_MC_M", &Top2_Neutrino_MC_M, "Top2_Neutrino_MC_M/F");
-
-   tree_particle->Branch("ljets_ttbar_MC_Pt", &ttbar_MC_Pt, "ttbar_MC_Pt/F");
-   tree_particle->Branch("ljets_ttbar_MC_Eta", &ttbar_MC_Eta, "ttbar_MC_Eta/F");
-   tree_particle->Branch("ljets_ttbar_MC_Phi", &ttbar_MC_Phi, "ttbar_MC_Phi/F");
-   tree_particle->Branch("ljets_ttbar_MC_E", &ttbar_MC_E, "ttbar_MC_E/F");
-   tree_particle->Branch("ljets_ttbar_MC_M", &ttbar_MC_M, "ttbar_MC_M/F");
-   ///////////////////////
-
-   TTree *tree_reco = new TTree("Tops_Reco","TLorenzVecors_of_tops_ljets_reco");
-   tree_reco->Branch("Hadronic_Top_Data_Pt", &Top1_Data_Pt, "Top1_Data_Pt/F");
-   tree_reco->Branch("Hadronic_Top_Data_Eta", &Top1_Data_Eta, "Top1_Data_Eta/F");
-   tree_reco->Branch("Hadronic_Top_Data_Phi", &Top1_Data_Phi, "Top1_Data_Phi/F");
-   tree_reco->Branch("Hadronic_Top_Data_E", &Top1_Data_E, "Top1_Data_E/F");
-   tree_reco->Branch("Hadronic_Top_Data_M", &Top1_Data_M, "Top1_Data_M/F");
-
-   tree_reco->Branch("Hadronic_Top_Bjet_Data_Pt", &Top1_Bjet_Data_Pt, "Top1_Bjet_Data_Pt/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_Data_Eta", &Top1_Bjet_Data_Eta, "Top1_Bjet_Data_Eta/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_Data_Phi", &Top1_Bjet_Data_Phi, "Top1_Bjet_Data_Phi/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_Data_E", &Top1_Bjet_Data_E, "Top1_Bjet_Data_E/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_Data_M", &Top1_Bjet_Data_M, "Top1_Bjet_Data_M/F");
-
-   tree_reco->Branch("Hadronic_Top_Wboson_Data_Pt", &Top1_Wboson_Data_Pt, "Top1_Wboson_Data_Pt/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_Data_Eta", &Top1_Wboson_Data_Eta, "Top1_Wboson_Data_Eta/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_Data_Phi", &Top1_Wboson_Data_Phi, "Top1_Wboson_Data_Phi/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_Data_E", &Top1_Wboson_Data_E, "Top1_Wboson_Data_E/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_Data_M", &Top1_Wboson_Data_M, "Top1_Wboson_Data_M/F");
-
-   tree_reco->Branch("Leptonic_Top_Data_Pt", &Top2_Data_Pt, "Top2_Data_Pt/F");
-   tree_reco->Branch("Leptonic_Top_Data_Eta", &Top2_Data_Eta, "Top2_Data_Eta/F");
-   tree_reco->Branch("Leptonic_Top_Data_Phi", &Top2_Data_Phi, "Top2_Data_Phi/F");
-   tree_reco->Branch("Leptonic_Top_Data_E", &Top2_Data_E, "Top2_Data_E/F");
-   tree_reco->Branch("Leptonic_Top_Data_M", &Top2_Data_M, "Top2_Data_M/F");
-
-   tree_reco->Branch("Leptonic_Top_Bjet_Data_Pt", &Top2_Bjet_Data_Pt, "Top2_Bjet_Data_Pt/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_Data_Eta", &Top2_Bjet_Data_Eta, "Top2_Bjet_Data_Eta/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_Data_Phi", &Top2_Bjet_Data_Phi, "Top2_Bjet_Data_Phi/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_Data_E", &Top2_Bjet_Data_E, "Top2_Bjet_Data_E/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_Data_M", &Top2_Bjet_Data_M, "Top2_Bjet_Data_M/F");
-
-   tree_reco->Branch("Leptonic_Top_Lepton_Data_Pt", &Top2_Lepton_Data_Pt, "Top2_Lepton_Data_Pt/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_Data_Eta", &Top2_Lepton_Data_Eta, "Top2_Lepton_Data_Eta/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_Data_Phi", &Top2_Lepton_Data_Phi, "Top2_Lepton_Data_Phi/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_Data_E", &Top2_Lepton_Data_E, "Top2_Lepton_Data_E/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_Data_M", &Top2_Lepton_Data_M, "Top2_Lepton_Data_M/F");
-
-   tree_reco->Branch("Leptonic_Top_Neutrino_Data_Pt", &Top2_Neutrino_Data_Pt, "Top2_Neutrino_Data_Pt/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_Data_Eta", &Top2_Neutrino_Data_Eta, "Top2_Neutrino_Data_Eta/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_Data_Phi", &Top2_Neutrino_Data_Phi, "Top2_Neutrino_Data_Phi/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_Data_E", &Top2_Neutrino_Data_E, "Top2_Neutrino_Data_E/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_Data_M", &Top2_Neutrino_Data_M, "Top2_Neutrino_Data_M/F");
-
-   tree_reco->Branch("ljets_ttbar_Data_Pt", &ttbar_Data_Pt, "ttbar_Data_Pt/F");
-   tree_reco->Branch("ljets_ttbar_Data_Eta", &ttbar_Data_Eta, "ttbar_Data_Eta/F");
-   tree_reco->Branch("ljets_ttbar_Data_Phi", &ttbar_Data_Phi, "ttbar_Data_Phi/F");
-   tree_reco->Branch("ljets_ttbar_Data_E", &ttbar_Data_E, "ttbar_Data_E/F");
-   tree_reco->Branch("ljets_ttbar_Data_M", &ttbar_Data_M, "ttbar_Data_M/F");
-
-   tree_reco->Branch("Hadronic_Top_MC_Pt", &Top1_MC_Pt, "Top1_MC_Pt/F");
-   tree_reco->Branch("Hadronic_Top_MC_Eta", &Top1_MC_Eta, "Top1_MC_Eta/F");
-   tree_reco->Branch("Hadronic_Top_MC_Phi", &Top1_MC_Phi, "Top1_MC_Phi/F");
-   tree_reco->Branch("Hadronic_Top_MC_E", &Top1_MC_E, "Top1_MC_E/F");
-   tree_reco->Branch("Hadronic_Top_MC_M", &Top1_MC_M, "Top1_MC_M/F");
-
-   tree_reco->Branch("Hadronic_Top_Bjet_MC_Pt", &Top1_Bjet_MC_Pt, "Top1_Bjet_MC_Pt/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_MC_Eta", &Top1_Bjet_MC_Eta, "Top1_Bjet_MC_Eta/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_MC_Phi", &Top1_Bjet_MC_Phi, "Top1_Bjet_MC_Phi/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_MC_E", &Top1_Bjet_MC_E, "Top1_Bjet_MC_E/F");
-   tree_reco->Branch("Hadronic_Top_Bjet_MC_M", &Top1_Bjet_MC_M, "Top1_Bjet_MC_M/F");
-
-   tree_reco->Branch("Hadronic_Top_Wboson_MC_Pt", &Top1_Wboson_MC_Pt, "Top1_Wboson_MC_Pt/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_MC_Eta", &Top1_Wboson_MC_Eta, "Top1_Wboson_MC_Eta/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_MC_Phi", &Top1_Wboson_MC_Phi, "Top1_Wboson_MC_Phi/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_MC_E", &Top1_Wboson_MC_E, "Top1_Wboson_MC_E/F");
-   tree_reco->Branch("Hadronic_Top_Wboson_MC_M", &Top1_Wboson_MC_M, "Top1_Wboson_MC_M/F");
-
-   tree_reco->Branch("Leptonic_Top_MC_Pt", &Top2_MC_Pt, "Top2_MC_Pt/F");
-   tree_reco->Branch("Leptonic_Top_MC_Eta", &Top2_MC_Eta, "Top2_MC_Eta/F");
-   tree_reco->Branch("Leptonic_Top_MC_Phi", &Top2_MC_Phi, "Top2_MC_Phi/F");
-   tree_reco->Branch("Leptonic_Top_MC_E", &Top2_MC_E, "Top2_MC_E/F");
-   tree_reco->Branch("Leptonic_Top_MC_M", &Top2_MC_M, "Top2_MC_M/F");
-
-   tree_reco->Branch("Leptonic_Top_Bjet_MC_Pt", &Top2_Bjet_MC_Pt, "Top2_Bjet_MC_Pt/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_MC_Eta", &Top2_Bjet_MC_Eta, "Top2_Bjet_MC_Eta/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_MC_Phi", &Top2_Bjet_MC_Phi, "Top2_Bjet_MC_Phi/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_MC_E", &Top2_Bjet_MC_E, "Top2_Bjet_MC_E/F");
-   tree_reco->Branch("Leptonic_Top_Bjet_MC_M", &Top2_Bjet_MC_M, "Top2_Bjet_MC_M/F");
-
-   tree_reco->Branch("Leptonic_Top_Lepton_MC_Pt", &Top2_Lepton_MC_Pt, "Top2_Lepton_MC_Pt/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_MC_Eta", &Top2_Lepton_MC_Eta, "Top2_Lepton_MC_Eta/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_MC_Phi", &Top2_Lepton_MC_Phi, "Top2_Lepton_MC_Phi/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_MC_E", &Top2_Lepton_MC_E, "Top2_Lepton_MC_E/F");
-   tree_reco->Branch("Leptonic_Top_Lepton_MC_M", &Top2_Lepton_MC_M, "Top2_Lepton_MC_M/F");
-
-   tree_reco->Branch("Leptonic_Top_Neutrino_MC_Pt", &Top2_Neutrino_MC_Pt, "Top2_Neutrino_MC_Pt/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_MC_Eta", &Top2_Neutrino_MC_Eta, "Top2_Neutrino_MC_Eta/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_MC_Phi", &Top2_Neutrino_MC_Phi, "Top2_Neutrino_MC_Phi/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_MC_E", &Top2_Neutrino_MC_E, "Top2_Neutrino_MC_E/F");
-   tree_reco->Branch("Leptonic_Top_Neutrino_MC_M", &Top2_Neutrino_MC_M, "Top2_Neutrino_MC_M/F");
-
-   tree_reco->Branch("ljets_ttbar_MC_Pt", &ttbar_MC_Pt, "ttbar_MC_Pt/F");
-   tree_reco->Branch("ljets_ttbar_MC_Eta", &ttbar_MC_Eta, "ttbar_MC_Eta/F");
-   tree_reco->Branch("ljets_ttbar_MC_Phi", &ttbar_MC_Phi, "ttbar_MC_Phi/F");
-   tree_reco->Branch("ljets_ttbar_MC_E", &ttbar_MC_E, "ttbar_MC_E/F");
-   tree_reco->Branch("ljets_ttbar_MC_M", &ttbar_MC_M, "ttbar_MC_M/F");
-   //////////////////////////////////////////////
-   
-   TTree *tree = new TTree("Tops","TLorenzVecors_of_tops_ljets");
-   tree->Branch("Hadronic_Top_Data_Pt", &Top1_Data_Pt, "Top1_Data_Pt/F");
-   tree->Branch("Hadronic_Top_Data_Eta", &Top1_Data_Eta, "Top1_Data_Eta/F");
-   tree->Branch("Hadronic_Top_Data_Phi", &Top1_Data_Phi, "Top1_Data_Phi/F");
-   tree->Branch("Hadronic_Top_Data_E", &Top1_Data_E, "Top1_Data_E/F");
-   tree->Branch("Hadronic_Top_Data_M", &Top1_Data_M, "Top1_Data_M/F");
-
-   tree->Branch("Hadronic_Top_Bjet_Data_Pt", &Top1_Bjet_Data_Pt, "Top1_Bjet_Data_Pt/F");
-   tree->Branch("Hadronic_Top_Bjet_Data_Eta", &Top1_Bjet_Data_Eta, "Top1_Bjet_Data_Eta/F");
-   tree->Branch("Hadronic_Top_Bjet_Data_Phi", &Top1_Bjet_Data_Phi, "Top1_Bjet_Data_Phi/F");
-   tree->Branch("Hadronic_Top_Bjet_Data_E", &Top1_Bjet_Data_E, "Top1_Bjet_Data_E/F");
-   tree->Branch("Hadronic_Top_Bjet_Data_M", &Top1_Bjet_Data_M, "Top1_Bjet_Data_M/F");
-
-   tree->Branch("Hadronic_Top_Wboson_Data_Pt", &Top1_Wboson_Data_Pt, "Top1_Wboson_Data_Pt/F");
-   tree->Branch("Hadronic_Top_Wboson_Data_Eta", &Top1_Wboson_Data_Eta, "Top1_Wboson_Data_Eta/F");
-   tree->Branch("Hadronic_Top_Wboson_Data_Phi", &Top1_Wboson_Data_Phi, "Top1_Wboson_Data_Phi/F");
-   tree->Branch("Hadronic_Top_Wboson_Data_E", &Top1_Wboson_Data_E, "Top1_Wboson_Data_E/F");
-   tree->Branch("Hadronic_Top_Wboson_Data_M", &Top1_Wboson_Data_M, "Top1_Wboson_Data_M/F");
-
-   tree->Branch("Leptonic_Top_Data_Pt", &Top2_Data_Pt, "Top2_Data_Pt/F");
-   tree->Branch("Leptonic_Top_Data_Eta", &Top2_Data_Eta, "Top2_Data_Eta/F");
-   tree->Branch("Leptonic_Top_Data_Phi", &Top2_Data_Phi, "Top2_Data_Phi/F");
-   tree->Branch("Leptonic_Top_Data_E", &Top2_Data_E, "Top2_Data_E/F");
-   tree->Branch("Leptonic_Top_Data_M", &Top2_Data_M, "Top2_Data_M/F");
-
-   tree->Branch("Leptonic_Top_Bjet_Data_Pt", &Top2_Bjet_Data_Pt, "Top2_Bjet_Data_Pt/F");
-   tree->Branch("Leptonic_Top_Bjet_Data_Eta", &Top2_Bjet_Data_Eta, "Top2_Bjet_Data_Eta/F");
-   tree->Branch("Leptonic_Top_Bjet_Data_Phi", &Top2_Bjet_Data_Phi, "Top2_Bjet_Data_Phi/F");
-   tree->Branch("Leptonic_Top_Bjet_Data_E", &Top2_Bjet_Data_E, "Top2_Bjet_Data_E/F");
-   tree->Branch("Leptonic_Top_Bjet_Data_M", &Top2_Bjet_Data_M, "Top2_Bjet_Data_M/F");
-
-   tree->Branch("Leptonic_Top_Lepton_Data_Pt", &Top2_Lepton_Data_Pt, "Top2_Lepton_Data_Pt/F");
-   tree->Branch("Leptonic_Top_Lepton_Data_Eta", &Top2_Lepton_Data_Eta, "Top2_Lepton_Data_Eta/F");
-   tree->Branch("Leptonic_Top_Lepton_Data_Phi", &Top2_Lepton_Data_Phi, "Top2_Lepton_Data_Phi/F");
-   tree->Branch("Leptonic_Top_Lepton_Data_E", &Top2_Lepton_Data_E, "Top2_Lepton_Data_E/F");
-   tree->Branch("Leptonic_Top_Lepton_Data_M", &Top2_Lepton_Data_M, "Top2_Lepton_Data_M/F");
-
-   tree->Branch("Leptonic_Top_Neutrino_Data_Pt", &Top2_Neutrino_Data_Pt, "Top2_Neutrino_Data_Pt/F");
-   tree->Branch("Leptonic_Top_Neutrino_Data_Eta", &Top2_Neutrino_Data_Eta, "Top2_Neutrino_Data_Eta/F");
-   tree->Branch("Leptonic_Top_Neutrino_Data_Phi", &Top2_Neutrino_Data_Phi, "Top2_Neutrino_Data_Phi/F");
-   tree->Branch("Leptonic_Top_Neutrino_Data_E", &Top2_Neutrino_Data_E, "Top2_Neutrino_Data_E/F");
-   tree->Branch("Leptonic_Top_Neutrino_Data_M", &Top2_Neutrino_Data_M, "Top2_Neutrino_Data_M/F");
-
-   tree->Branch("ljets_ttbar_Data_Pt", &ttbar_Data_Pt, "ttbar_Data_Pt/F");
-   tree->Branch("ljets_ttbar_Data_Eta", &ttbar_Data_Eta, "ttbar_Data_Eta/F");
-   tree->Branch("ljets_ttbar_Data_Phi", &ttbar_Data_Phi, "ttbar_Data_Phi/F");
-   tree->Branch("ljets_ttbar_Data_E", &ttbar_Data_E, "ttbar_Data_E/F");
-   tree->Branch("ljets_ttbar_Data_M", &ttbar_Data_M, "ttbar_Data_M/F");
-
-   tree->Branch("Hadronic_Top_MC_Pt", &Top1_MC_Pt, "Top1_MC_Pt/F");
-   tree->Branch("Hadronic_Top_MC_Eta", &Top1_MC_Eta, "Top1_MC_Eta/F");
-   tree->Branch("Hadronic_Top_MC_Phi", &Top1_MC_Phi, "Top1_MC_Phi/F");
-   tree->Branch("Hadronic_Top_MC_E", &Top1_MC_E, "Top1_MC_E/F");
-   tree->Branch("Hadronic_Top_MC_M", &Top1_MC_M, "Top1_MC_M/F");
-
-   tree->Branch("Hadronic_Top_Bjet_MC_Pt", &Top1_Bjet_MC_Pt, "Top1_Bjet_MC_Pt/F");
-   tree->Branch("Hadronic_Top_Bjet_MC_Eta", &Top1_Bjet_MC_Eta, "Top1_Bjet_MC_Eta/F");
-   tree->Branch("Hadronic_Top_Bjet_MC_Phi", &Top1_Bjet_MC_Phi, "Top1_Bjet_MC_Phi/F");
-   tree->Branch("Hadronic_Top_Bjet_MC_E", &Top1_Bjet_MC_E, "Top1_Bjet_MC_E/F");
-   tree->Branch("Hadronic_Top_Bjet_MC_M", &Top1_Bjet_MC_M, "Top1_Bjet_MC_M/F");
-
-   tree->Branch("Hadronic_Top_Wboson_MC_Pt", &Top1_Wboson_MC_Pt, "Top1_Wboson_MC_Pt/F");
-   tree->Branch("Hadronic_Top_Wboson_MC_Eta", &Top1_Wboson_MC_Eta, "Top1_Wboson_MC_Eta/F");
-   tree->Branch("Hadronic_Top_Wboson_MC_Phi", &Top1_Wboson_MC_Phi, "Top1_Wboson_MC_Phi/F");
-   tree->Branch("Hadronic_Top_Wboson_MC_E", &Top1_Wboson_MC_E, "Top1_Wboson_MC_E/F");
-   tree->Branch("Hadronic_Top_Wboson_MC_M", &Top1_Wboson_MC_M, "Top1_Wboson_MC_M/F");
-
-   tree->Branch("Leptonic_Top_MC_Pt", &Top2_MC_Pt, "Top2_MC_Pt/F");
-   tree->Branch("Leptonic_Top_MC_Eta", &Top2_MC_Eta, "Top2_MC_Eta/F");
-   tree->Branch("Leptonic_Top_MC_Phi", &Top2_MC_Phi, "Top2_MC_Phi/F");
-   tree->Branch("Leptonic_Top_MC_E", &Top2_MC_E, "Top2_MC_E/F");
-   tree->Branch("Leptonic_Top_MC_M", &Top2_MC_M, "Top2_MC_M/F");
-
-   tree->Branch("Leptonic_Top_Bjet_MC_Pt", &Top2_Bjet_MC_Pt, "Top2_Bjet_MC_Pt/F");
-   tree->Branch("Leptonic_Top_Bjet_MC_Eta", &Top2_Bjet_MC_Eta, "Top2_Bjet_MC_Eta/F");
-   tree->Branch("Leptonic_Top_Bjet_MC_Phi", &Top2_Bjet_MC_Phi, "Top2_Bjet_MC_Phi/F");
-   tree->Branch("Leptonic_Top_Bjet_MC_E", &Top2_Bjet_MC_E, "Top2_Bjet_MC_E/F");
-   tree->Branch("Leptonic_Top_Bjet_MC_M", &Top2_Bjet_MC_M, "Top2_Bjet_MC_M/F");
-
-   tree->Branch("Leptonic_Top_Lepton_MC_Pt", &Top2_Lepton_MC_Pt, "Top2_Lepton_MC_Pt/F");
-   tree->Branch("Leptonic_Top_Lepton_MC_Eta", &Top2_Lepton_MC_Eta, "Top2_Lepton_MC_Eta/F");
-   tree->Branch("Leptonic_Top_Lepton_MC_Phi", &Top2_Lepton_MC_Phi, "Top2_Lepton_MC_Phi/F");
-   tree->Branch("Leptonic_Top_Lepton_MC_E", &Top2_Lepton_MC_E, "Top2_Lepton_MC_E/F");
-   tree->Branch("Leptonic_Top_Lepton_MC_M", &Top2_Lepton_MC_M, "Top2_Lepton_MC_M/F");
-
-   tree->Branch("Leptonic_Top_Neutrino_MC_Pt", &Top2_Neutrino_MC_Pt, "Top2_Neutrino_MC_Pt/F");
-   tree->Branch("Leptonic_Top_Neutrino_MC_Eta", &Top2_Neutrino_MC_Eta, "Top2_Neutrino_MC_Eta/F");
-   tree->Branch("Leptonic_Top_Neutrino_MC_Phi", &Top2_Neutrino_MC_Phi, "Top2_Neutrino_MC_Phi/F");
-   tree->Branch("Leptonic_Top_Neutrino_MC_E", &Top2_Neutrino_MC_E, "Top2_Neutrino_MC_E/F");
-   tree->Branch("Leptonic_Top_Neutrino_MC_M", &Top2_Neutrino_MC_M, "Top2_Neutrino_MC_M/F");
-
-   tree->Branch("ljets_ttbar_MC_Pt", &ttbar_MC_Pt, "ttbar_MC_Pt/F");
-   tree->Branch("ljets_ttbar_MC_Eta", &ttbar_MC_Eta, "ttbar_MC_Eta/F");
-   tree->Branch("ljets_ttbar_MC_Phi", &ttbar_MC_Phi, "ttbar_MC_Phi/F");
-   tree->Branch("ljets_ttbar_MC_E", &ttbar_MC_E, "ttbar_MC_E/F");
-   tree->Branch("ljets_ttbar_MC_M", &ttbar_MC_M, "ttbar_MC_M/F");
-
-   tree->Branch("check_variable1", &check_variable1, "check_variable1/F");
-   tree->Branch("check_variable2", &check_variable2, "check_variable2/F");
-   tree->Branch("check_variable3", &check_variable3, "check_variable3/F");
-   tree->Branch("check_variable4", &check_variable4, "check_variable4/F");
-   
 
 
    Long64_t nentries = fChain->GetEntriesFast();
    Long64_t nbytes = 0, nb = 0;
-
-   TLorentzVector MCTop1, MCTop2;
-   TLorentzVector Top1, Top2;
-   bool GotDataEvent = false;
-   bool GotMCEvent = false;
-   bool FoundNeutrino = false;
-   bool MCFoundNeutrino = false;
 
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
       //cout << "Bingo " << jentry << " " << Event_Weight[0] << endl;
@@ -1193,7 +764,6 @@ void PBClass::Loop(TString Output, TString Tag)
       }
 
       //CheckPreSelected(MyDataEvent);
-      FoundNeutrino = false;
       if (CheckPreSelected(MyDataEvent)){
          //cout << "*********Preselected ********" << endl;
          //MyDataEvent.SetLepton(MaxLepton(MyDataEvent));
@@ -1202,7 +772,7 @@ void PBClass::Loop(TString Output, TString Tag)
          Wboson.SetPtEtaPhiE(W.Pt(),W.Eta(), W.Phi(), W.E());
          Wboson.SetCharge(MyDataEvent.Jet3.GetCharge()+MyDataEvent.Jet4.GetCharge());
          MyDataEvent.SetWHadron(Wboson);
-         //TLorentzVector Top1, Top2;
+         TLorentzVector Top1, Top2;
          //ComputeNeutrinoPz();
          double Px, Py, Pz, E, k, a, b, c, MET;
          
@@ -1232,6 +802,7 @@ void PBClass::Loop(TString Output, TString Tag)
          b = -2*k*MyDataEvent.Lepton.Pz();
          c = MET*MET*MyDataEvent.Lepton.P()*MyDataEvent.Lepton.P() - k*k;
          Pz = MinQuadraticEq(a,b,c); // https://twiki.cern.ch/twiki/bin/view/Main/TopPairProduction
+         bool FoundNeutrino = false;
          if (Pz != nan("1")){
             E = sqrt(Px*Px + Py*Py + Pz*Pz);
             MyDataEvent.Neutrino1.SetPxPyPzE(Px,Py,Pz,E);   
@@ -1240,30 +811,15 @@ void PBClass::Loop(TString Output, TString Tag)
          } else{
             std::cerr << "This should never happen !!!" << std::endl;
          }
-
-         
          //E = sqrt(Px*Px + Py*Py + Pz*Pz);
          //MyDataEvent.Neutrino1.SetPxPyPzE(Px,Py,Pz,E);
          //MyDataEvent.Neutrino1.SetPtEtaPhiM(MyDataEvent.Neutrino1.Pt(), MyDataEvent.Neutrino1.Eta(), MyDataEvent.Neutrino1.Phi(), MyDataEvent.WHadron.M() );
-         GotDataEvent = false;
-         if (DeltaR(MyDataEvent.BJet1, MyDataEvent.Lepton) < DeltaR(MyDataEvent.BJet2, MyDataEvent.Lepton) && (FoundNeutrino == true)){
+         if (DeltaR(MyDataEvent.BJet1, MyDataEvent.Lepton) < DeltaR(MyDataEvent.BJet2, MyDataEvent.Lepton)){
             Top1 = MyDataEvent.BJet2 + MyDataEvent.WHadron; 
             MyLorentzVector FTop1, FTop2;
             FTop1.SetPtEtaPhiE(Top1.Pt(),Top1.Eta(), Top1.Phi(), Top1.E());
             FTop1.SetCharge(MyDataEvent.BJet2.GetCharge() + MyDataEvent.WHadron.GetCharge());
             MyDataEvent.SetPseudoTop(FTop1);
-            Top1_Bjet_Data_Pt = MyDataEvent.BJet2.Pt();
-            Top1_Bjet_Data_Eta = MyDataEvent.BJet2.Eta();
-            Top1_Bjet_Data_Phi = MyDataEvent.BJet2.Phi();
-            Top1_Bjet_Data_E = MyDataEvent.BJet2.E();
-            Top1_Bjet_Data_M = MyDataEvent.BJet2.M();
-
-            Top1_Wboson_Data_Pt = MyDataEvent.WHadron.Pt();
-            Top1_Wboson_Data_Eta = MyDataEvent.WHadron.Eta();
-            Top1_Wboson_Data_Phi = MyDataEvent.WHadron.Phi();
-            Top1_Wboson_Data_E = MyDataEvent.WHadron.E();
-            Top1_Wboson_Data_M = MyDataEvent.WHadron.M();
-
             if (FoundNeutrino == true){
                TLorentzVector WLepton = MyDataEvent.Lepton + MyDataEvent.Neutrino1;
                MyLorentzVector WbosonLepton;
@@ -1274,46 +830,14 @@ void PBClass::Loop(TString Output, TString Tag)
                FTop2.SetPtEtaPhiE(Top2.Pt(),Top2.Eta(), Top2.Phi(), Top2.E());
                FTop2.SetCharge(MyDataEvent.BJet1.GetCharge() + MyDataEvent.Lepton.GetCharge());
                MyDataEvent.SetLeptonPseudotop(FTop2);
-
-               Top2_Bjet_Data_Pt = MyDataEvent.BJet1.Pt();
-               Top2_Bjet_Data_Eta = MyDataEvent.BJet1.Eta();
-               Top2_Bjet_Data_Phi = MyDataEvent.BJet1.Phi();
-               Top2_Bjet_Data_E = MyDataEvent.BJet1.E();
-               Top2_Bjet_Data_M = MyDataEvent.BJet1.M();
-
-               Top2_Lepton_Data_Pt = MyDataEvent.Lepton.Pt();
-               Top2_Lepton_Data_Eta = MyDataEvent.Lepton.Eta();
-               Top2_Lepton_Data_Phi = MyDataEvent.Lepton.Phi();
-               Top2_Lepton_Data_E = MyDataEvent.Lepton.E();
-               Top2_Lepton_Data_M = MyDataEvent.Lepton.M();
-
-               Top2_Neutrino_Data_Pt = MyDataEvent.Neutrino1.Pt();
-               Top2_Neutrino_Data_Eta = MyDataEvent.Neutrino1.Eta();
-               Top2_Neutrino_Data_Phi = MyDataEvent.Neutrino1.Phi();
-               Top2_Neutrino_Data_E = MyDataEvent.Neutrino1.E();
-               Top2_Neutrino_Data_M = MyDataEvent.Neutrino1.M();
-
-               GotDataEvent = true;
             }
             //cout << "dR1: " << DeltaR(MyDataEvent.BJet1, MyDataEvent.Lepton) << " < " << DeltaR(MyDataEvent.BJet2, MyDataEvent.Lepton) << endl;  
-         } else if (FoundNeutrino == true) {
+         } else {
             Top1 = MyDataEvent.BJet1 + MyDataEvent.WHadron;
             MyLorentzVector FTop1, FTop2;
             FTop1.SetPtEtaPhiE(Top1.Pt(),Top1.Eta(), Top1.Phi(), Top1.E());
             FTop1.SetCharge(MyDataEvent.BJet1.GetCharge() + MyDataEvent.WHadron.GetCharge());
             MyDataEvent.SetPseudoTop(FTop1);
-
-            Top1_Bjet_Data_Pt = MyDataEvent.BJet1.Pt();
-            Top1_Bjet_Data_Eta = MyDataEvent.BJet1.Eta();
-            Top1_Bjet_Data_Phi = MyDataEvent.BJet1.Phi();
-            Top1_Bjet_Data_E = MyDataEvent.BJet1.E();
-            Top1_Bjet_Data_M = MyDataEvent.BJet1.M();
-
-            Top1_Wboson_Data_Pt = MyDataEvent.WHadron.Pt();
-            Top1_Wboson_Data_Eta = MyDataEvent.WHadron.Eta();
-            Top1_Wboson_Data_Phi = MyDataEvent.WHadron.Phi();
-            Top1_Wboson_Data_E = MyDataEvent.WHadron.E();
-            Top1_Wboson_Data_M = MyDataEvent.WHadron.M();
             if (FoundNeutrino == true){
                TLorentzVector WLepton = MyDataEvent.Lepton + MyDataEvent.Neutrino1;
                MyLorentzVector WbosonLepton;
@@ -1324,30 +848,11 @@ void PBClass::Loop(TString Output, TString Tag)
                FTop2.SetPtEtaPhiE(Top2.Pt(),Top2.Eta(), Top2.Phi(), Top2.E());
                FTop2.SetCharge(MyDataEvent.BJet2.GetCharge() + MyDataEvent.Lepton.GetCharge());
                MyDataEvent.SetLeptonPseudotop(FTop2);
-
-               Top2_Bjet_Data_Pt = MyDataEvent.BJet2.Pt();
-               Top2_Bjet_Data_Eta = MyDataEvent.BJet2.Eta();
-               Top2_Bjet_Data_Phi = MyDataEvent.BJet2.Phi();
-               Top2_Bjet_Data_E = MyDataEvent.BJet2.E();
-               Top2_Bjet_Data_M = MyDataEvent.BJet2.M();
-
-               Top2_Lepton_Data_Pt = MyDataEvent.Lepton.Pt();
-               Top2_Lepton_Data_Eta = MyDataEvent.Lepton.Eta();
-               Top2_Lepton_Data_Phi = MyDataEvent.Lepton.Phi();
-               Top2_Lepton_Data_E = MyDataEvent.Lepton.E();
-               Top2_Lepton_Data_M = MyDataEvent.Lepton.M();
-
-               Top2_Neutrino_Data_Pt = MyDataEvent.Neutrino1.Pt();
-               Top2_Neutrino_Data_Eta = MyDataEvent.Neutrino1.Eta();
-               Top2_Neutrino_Data_Phi = MyDataEvent.Neutrino1.Phi();
-               Top2_Neutrino_Data_E = MyDataEvent.Neutrino1.E();
-               Top2_Neutrino_Data_M = MyDataEvent.Neutrino1.M();
-               GotDataEvent = true;
             }
             //cout << "dR2: " << DeltaR(MyDataEvent.BJet1, MyDataEvent.Lepton) << " > " << DeltaR(MyDataEvent.BJet2, MyDataEvent.Lepton) << endl;
          };
          
-         if ((FoundNeutrino == true)&&(GotDataEvent == true)){
+         if (FoundNeutrino == true){
          TLorentzVector TopPair;
          TopPair = Top1 + Top2;
          MyLorentzVector FTopPair;
@@ -1374,23 +879,7 @@ void PBClass::Loop(TString Output, TString Tag)
          LeptonPseudoTopVsTopPairEta->Fill(MyDataEvent.LeptonPseudotop.Eta(), MyDataEvent.PseudoTopPair.Eta());
          HadronPseudoTopVsTopPairEta->Fill(MyDataEvent.PseudoTop.Eta(), MyDataEvent.PseudoTopPair.Eta());
          MyDataEvent.Setm_FinalSelected(true);
-         Top1_Data_Pt = Top1.Pt();
-         Top1_Data_Eta = Top1.Eta();
-         Top1_Data_Phi = Top1.Phi();
-         Top1_Data_E = Top1.E();
-         Top1_Data_M = Top1.M();
-         Top2_Data_Pt = Top2.Pt();
-         Top2_Data_Eta = Top2.Eta();
-         Top2_Data_Phi = Top2.Phi();
-         Top2_Data_E = Top2.E();
-         Top2_Data_M = Top2.M();
 
-         ttbar_Data_Pt = (Top1 + Top2).Pt();
-         ttbar_Data_Eta = (Top1 + Top2).Eta();
-         ttbar_Data_Phi = (Top1 + Top2).Phi();
-         ttbar_Data_E = (Top1 + Top2).E();
-         ttbar_Data_M = (Top1 + Top2).M();
-         
          }
          }
       
@@ -1520,7 +1009,6 @@ void PBClass::Loop(TString Output, TString Tag)
 
       
       //CheckPreSelected(MyMCEvent);
-      MCFoundNeutrino = false;
       if (CheckPreSelected(MyMCEvent)){
          //cout << "*********Preselected ********" << endl;
          //MyMCEvent.SetLepton(MaxLepton(MyMCEvent));
@@ -1529,7 +1017,7 @@ void PBClass::Loop(TString Output, TString Tag)
          MCWboson.SetPtEtaPhiE(MCW.Pt(),MCW.Eta(), MCW.Phi(), MCW.E());
          MCWboson.SetCharge(MyMCEvent.Jet3.GetCharge()+MyMCEvent.Jet4.GetCharge());
          MyMCEvent.SetWHadron(MCWboson);
-         //TLorentzVector MCTop1, MCTop2;
+         TLorentzVector MCTop1, MCTop2;
          //ComputeNeutrinoPz();
          double MCPx, MCPy, MCPz, MCE, MCk, MCa, MCb, MCc;
          MCPx = GenMissingET_MET[0]*cos(GenMissingET_Phi[0]);
@@ -1539,7 +1027,7 @@ void PBClass::Loop(TString Output, TString Tag)
          MCb = -2*MCk*MyMCEvent.Lepton.Pz();
          MCc = GenMissingET_MET[0]*GenMissingET_MET[0]*MyMCEvent.Lepton.P()*MyMCEvent.Lepton.P() - MCk*MCk;
          MCPz = MinQuadraticEq(MCa,MCb,MCc); // https://twiki.cern.ch/twiki/bin/view/Main/TopPairProduction
-         
+         bool MCFoundNeutrino = false;
          if (MCPz != nan("1")){
             MCE = sqrt(MCPx*MCPx + MCPy*MCPy + MCPz*MCPz);
             MyMCEvent.Neutrino1.SetPxPyPzE(MCPx,MCPy,MCPz,MCE);   
@@ -1551,26 +1039,12 @@ void PBClass::Loop(TString Output, TString Tag)
          //E = sqrt(Px*Px + Py*Py + Pz*Pz);
          //MyMCEvent.Neutrino1.SetPxPyPzE(Px,Py,Pz,E);
          //MyMCEvent.Neutrino1.SetPtEtaPhiM(MyMCEvent.Neutrino1.Pt(), MyMCEvent.Neutrino1.Eta(), MyMCEvent.Neutrino1.Phi(), MyMCEvent.WHadron.M() );
-         GotMCEvent = false;
          if (DeltaR(MyMCEvent.BJet1, MyMCEvent.Lepton) < DeltaR(MyMCEvent.BJet2, MyMCEvent.Lepton)){
             MCTop1 = MyMCEvent.BJet2 + MyMCEvent.WHadron; 
             MyLorentzVector MCFTop1, MCFTop2;
             MCFTop1.SetPtEtaPhiE(MCTop1.Pt(),MCTop1.Eta(), MCTop1.Phi(), MCTop1.E());
             MCFTop1.SetCharge(MyMCEvent.BJet2.GetCharge() + MyMCEvent.WHadron.GetCharge());
             MyMCEvent.SetPseudoTop(MCFTop1);
-
-            Top1_Bjet_MC_Pt = MyMCEvent.BJet2.Pt();
-            Top1_Bjet_MC_Eta = MyMCEvent.BJet2.Eta();
-            Top1_Bjet_MC_Phi = MyMCEvent.BJet2.Phi();
-            Top1_Bjet_MC_E = MyMCEvent.BJet2.E();
-            Top1_Bjet_MC_M = MyMCEvent.BJet2.M();
-
-            Top1_Wboson_MC_Pt = MyMCEvent.WHadron.Pt();
-            Top1_Wboson_MC_Eta = MyMCEvent.WHadron.Eta();
-            Top1_Wboson_MC_Phi = MyMCEvent.WHadron.Phi();
-            Top1_Wboson_MC_E = MyMCEvent.WHadron.E();
-            Top1_Wboson_MC_M = MyMCEvent.WHadron.M();
-
             if (MCFoundNeutrino == true){
                TLorentzVector MCWLepton = MyMCEvent.Lepton + MyMCEvent.Neutrino1;
                MyLorentzVector MCWbosonLepton;
@@ -1581,47 +1055,14 @@ void PBClass::Loop(TString Output, TString Tag)
                MCFTop2.SetPtEtaPhiE(MCTop2.Pt(),MCTop2.Eta(), MCTop2.Phi(), MCTop2.E());
                MCFTop2.SetCharge(MyMCEvent.BJet1.GetCharge() + MyMCEvent.Lepton.GetCharge());
                MyMCEvent.SetLeptonPseudotop(MCFTop2);
-
-               Top2_Bjet_MC_Pt = MyMCEvent.BJet1.Pt();
-               Top2_Bjet_MC_Eta = MyMCEvent.BJet1.Eta();
-               Top2_Bjet_MC_Phi = MyMCEvent.BJet1.Phi();
-               Top2_Bjet_MC_E = MyMCEvent.BJet1.E();
-               Top2_Bjet_MC_M = MyMCEvent.BJet1.M();
-
-               Top2_Lepton_MC_Pt = MyMCEvent.Lepton.Pt();
-               Top2_Lepton_MC_Eta = MyMCEvent.Lepton.Eta();
-               Top2_Lepton_MC_Phi = MyMCEvent.Lepton.Phi();
-               Top2_Lepton_MC_E = MyMCEvent.Lepton.E();
-               Top2_Lepton_MC_M = MyMCEvent.Lepton.M();
-
-               Top2_Neutrino_MC_Pt = MyMCEvent.Neutrino1.Pt();
-               Top2_Neutrino_MC_Eta = MyMCEvent.Neutrino1.Eta();
-               Top2_Neutrino_MC_Phi = MyMCEvent.Neutrino1.Phi();
-               Top2_Neutrino_MC_E = MyMCEvent.Neutrino1.E();
-               Top2_Neutrino_MC_M = MyMCEvent.Neutrino1.M();
-
-               GotMCEvent = true;
             }
             //cout << "dR1: " << DeltaR(MyMCEvent.BJet1, MyMCEvent.Lepton) << " < " << DeltaR(MyMCEvent.BJet2, MyMCEvent.Lepton) << endl;  
-         } else if (FoundNeutrino == true){
+         } else {
             MCTop1 = MyMCEvent.BJet1 + MyMCEvent.WHadron;
             MyLorentzVector MCFTop1, MCFTop2;
             MCFTop1.SetPtEtaPhiE(MCTop1.Pt(),MCTop1.Eta(), MCTop1.Phi(), MCTop1.E());
             MCFTop1.SetCharge(MyMCEvent.BJet1.GetCharge() + MyMCEvent.WHadron.GetCharge());
             MyMCEvent.SetPseudoTop(MCFTop1);
-
-            Top1_Bjet_MC_Pt = MyMCEvent.BJet1.Pt();
-            Top1_Bjet_MC_Eta = MyMCEvent.BJet1.Eta();
-            Top1_Bjet_MC_Phi = MyMCEvent.BJet1.Phi();
-            Top1_Bjet_MC_E = MyMCEvent.BJet1.E();
-            Top1_Bjet_MC_M = MyMCEvent.BJet1.M();
-
-            Top1_Wboson_MC_Pt = MyMCEvent.WHadron.Pt();
-            Top1_Wboson_MC_Eta = MyMCEvent.WHadron.Eta();
-            Top1_Wboson_MC_Phi = MyMCEvent.WHadron.Phi();
-            Top1_Wboson_MC_E = MyMCEvent.WHadron.E();
-            Top1_Wboson_MC_M = MyMCEvent.WHadron.M();
-
             if (MCFoundNeutrino == true){
                TLorentzVector MCWLepton = MyMCEvent.Lepton + MyMCEvent.Neutrino1;
                MyLorentzVector MCWbosonLepton;
@@ -1632,30 +1073,11 @@ void PBClass::Loop(TString Output, TString Tag)
                MCFTop2.SetPtEtaPhiE(MCTop2.Pt(),MCTop2.Eta(), MCTop2.Phi(), MCTop2.E());
                MCFTop2.SetCharge(MyMCEvent.BJet2.GetCharge() + MyMCEvent.Lepton.GetCharge());
                MyMCEvent.SetLeptonPseudotop(MCFTop2);
-
-               Top2_Bjet_MC_Pt = MyMCEvent.BJet2.Pt();
-               Top2_Bjet_MC_Eta = MyMCEvent.BJet2.Eta();
-               Top2_Bjet_MC_Phi = MyMCEvent.BJet2.Phi();
-               Top2_Bjet_MC_E = MyMCEvent.BJet2.E();
-               Top2_Bjet_MC_M = MyMCEvent.BJet2.M();
-
-               Top2_Lepton_MC_Pt = MyMCEvent.Lepton.Pt();
-               Top2_Lepton_MC_Eta = MyMCEvent.Lepton.Eta();
-               Top2_Lepton_MC_Phi = MyMCEvent.Lepton.Phi();
-               Top2_Lepton_MC_E = MyMCEvent.Lepton.E();
-               Top2_Lepton_MC_M = MyMCEvent.Lepton.M();
-
-               Top2_Neutrino_MC_Pt = MyMCEvent.Neutrino1.Pt();
-               Top2_Neutrino_MC_Eta = MyMCEvent.Neutrino1.Eta();
-               Top2_Neutrino_MC_Phi = MyMCEvent.Neutrino1.Phi();
-               Top2_Neutrino_MC_E = MyMCEvent.Neutrino1.E();
-               Top2_Neutrino_MC_M = MyMCEvent.Neutrino1.M();
-               GotMCEvent = true;
             }
             //cout << "dR2: " << DeltaR(MyMCEvent.BJet1, MyMCEvent.Lepton) << " > " << DeltaR(MyMCEvent.BJet2, MyMCEvent.Lepton) << endl;
          };
          
-         if ((MCFoundNeutrino == true)&&(GotMCEvent == true)){ // && (DeltaR(MyMCEvent.BJet1, MyMCEvent.Lepton) > 0.2) && (DeltaR(MyMCEvent.BJet2, MyMCEvent.Lepton) > 0.2) && (DeltaR(MyMCEvent.Jet3, MyMCEvent.Lepton) > 0.2) && (DeltaR(MyMCEvent.Jet4, MyMCEvent.Lepton) > 0.2)) {
+         if (MCFoundNeutrino == true){ // && (DeltaR(MyMCEvent.BJet1, MyMCEvent.Lepton) > 0.2) && (DeltaR(MyMCEvent.BJet2, MyMCEvent.Lepton) > 0.2) && (DeltaR(MyMCEvent.Jet3, MyMCEvent.Lepton) > 0.2) && (DeltaR(MyMCEvent.Jet4, MyMCEvent.Lepton) > 0.2)) {
          TLorentzVector MCTopPair;
          MCTopPair = MCTop1 + MCTop2;
          MyLorentzVector MCFTopPair;
@@ -1679,28 +1101,10 @@ void PBClass::Loop(TString Output, TString Tag)
          MCWHadronVsHadronPseudoTop->Fill(MyMCEvent.PseudoTop.M(),MyMCEvent.WHadron.M());
          MCLeptonPseudoTopDeltaMassLeptonW->Fill(MyMCEvent.LeptonPseudotop.M()-MyMCEvent.WLepton.M());
          MCHadronPseudoTopDeltaMassHadronW->Fill(MyMCEvent.PseudoTop.M()-MyMCEvent.WHadron.M());
-         //MCLeptonPseudoTopVsTopPairEta->Fill(MyMCEvent.LeptonPseudotop.Eta(), MyMCEvent.PseudoTopPair.Eta());
-         //MCHadronPseudoTopVsTopPairEta->Fill(MyMCEvent.PseudoTop.Eta(), MyMCEvent.PseudoTopPair.Eta());
-         MCLeptonPseudoTopVsTopPairEta->Fill(MyMCEvent.PseudoTop.Phi(), MyMCEvent.PseudoTop.Eta());
-         MCHadronPseudoTopVsTopPairEta->Fill(MyMCEvent.LeptonPseudotop.Phi(), MyMCEvent.LeptonPseudotop.Eta());
+         MCLeptonPseudoTopVsTopPairEta->Fill(MyMCEvent.LeptonPseudotop.Eta(), MyMCEvent.PseudoTopPair.Eta());
+         MCHadronPseudoTopVsTopPairEta->Fill(MyMCEvent.PseudoTop.Eta(), MyMCEvent.PseudoTopPair.Eta());
          MyMCEvent.Setm_FinalSelected(true);
          //MyMCEvent.Print();
-         Top1_MC_Pt = MCTop1.Pt();
-         Top1_MC_Eta = MCTop1.Eta();
-         Top1_MC_Phi = MCTop1.Phi();
-         Top1_MC_E = MCTop1.E();
-         Top1_MC_M = MCTop1.M();
-         Top2_MC_Pt = MCTop2.Pt();
-         Top2_MC_Eta = MCTop2.Eta();
-         Top2_MC_Phi = MCTop2.Phi();
-         Top2_MC_E = MCTop2.E();
-         Top2_MC_M = MCTop2.M();
-
-         ttbar_MC_Pt = (MCTop1 + MCTop2).Pt();
-         ttbar_MC_Eta = (MCTop1 + MCTop2).Eta();
-         ttbar_MC_Phi = (MCTop1 + MCTop2).Phi();
-         ttbar_MC_E = (MCTop1 + MCTop2).E();
-         ttbar_MC_M = (MCTop1 + MCTop2).M();
 
          }
          }
@@ -1711,30 +1115,6 @@ void PBClass::Loop(TString Output, TString Tag)
             MigraTopPairPt->Fill(MyDataEvent.PseudoTopPair.Pt(),MyMCEvent.PseudoTopPair.Pt());
             MigraTopPairMass->Fill(MyDataEvent.PseudoTopPair.M(),MyMCEvent.PseudoTopPair.M());
             MigraTopPairEta->Fill(MyDataEvent.PseudoTopPair.Eta(),MyMCEvent.PseudoTopPair.Eta());
-            int_Event_size = Event_size;
-            int_GenLJet_size = GenLJet_size;
-            int_GenJet_size = GenJet_size;
-            int_GenElectron_size = GenElectron_size;
-            int_GenMuon_size = GenMuon_size;
-            int_GenTop_size = GenTop_size;
-            int_GenPhoton_size = GenPhoton_size;
-            int_GenMissingET_size = GenMissingET_size;
-            int_GenZPrime_size = GenZPrime_size;
-            int_GenW_size = GenW_size;
-            int_GenBhadrons_size = GenBhadrons_size;
-            int_Jet_size = Jet_size;
-            int_LJet_size = LJet_size;
-            int_JetJES_size = JetJES_size;
-            int_LJetJES_size = LJetJES_size;
-            int_Electron_size = Electron_size;
-            int_Photon_size = Photon_size;
-            int_Muon_size = Muon_size;
-            int_MissingET_size = MissingET_size;
-            int_ScalarHT_size = ScalarHT_size;
-
-            tree->Fill();
-            tree_particle->Fill();
-            tree_reco->Fill();
          }
 
 
@@ -1743,7 +1123,7 @@ void PBClass::Loop(TString Output, TString Tag)
       //   cout << "Processing: " << jentry << endl;
       //}
    }
-   tree->Write();
+
    vector <TCanvas*> CanVec;
    vector <TH1*> THVec;
    THVec.push_back(TopMass1);
